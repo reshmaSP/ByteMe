@@ -1,0 +1,52 @@
+<!-- template.html -->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Search Bar Example</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+<body>
+  <div>
+    <input type="text" id="searchInput" placeholder="Enter your search">
+    <button id="searchButton">Search</button>
+  </div>
+  <div id="searchResults"></div>
+
+  <script>
+    $(document).ready(function() {
+      $('#searchButton').click(function() {
+        const searchText = $('#searchInput').val();
+        if (searchText.trim() !== '') {
+          performSearch(searchText);
+        }
+      });
+
+      function performSearch(searchText) {
+        $.ajax({
+          url: '{% url "search_view" %}',
+          data: { 'q': searchText },
+          success: function(response) {
+            displaySearchResults(response.results);
+          },
+          error: function() {
+            alert('An error occurred while searching.');
+          }
+        });
+      }
+
+      function displaySearchResults(results) {
+        const searchResults = $('#searchResults');
+        searchResults.empty();
+
+        if (results.length === 0) {
+          searchResults.append('<p>No results found.</p>');
+        } else {
+          for (const result of results) {
+            searchResults.append(`<p>${result}</p>`);
+          }
+        }
+      }
+    });
+  </script>
+</body>
+</html>

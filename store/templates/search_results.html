@@ -1,0 +1,15 @@
+{% extends 'index.html' %}
+{% block content %}
+{% load cart %}
+{% load custom_filter %}
+
+<h1>Search Results for "{{ query }}"</h1>
+<ul>
+    {% if products %}
+    {% for product in products %}
+    <li>{{ product.name }} - {{ product.subcategory }}</li>
+    {% endfor %}
+    {% else %}
+    <p>No products found.</p>
+    {% endif %}
+</ul>
